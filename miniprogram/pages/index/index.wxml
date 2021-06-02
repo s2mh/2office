@@ -73,5 +73,11 @@
     </navigator>
   </view>
 
+  <!-- register -->
+  <view class="uploader">
+    <navigator url="../register/register" open-type="navigate" class="uploader-text">
+      <text>register</text>
+    </navigator>
+  </view>
 
 </view>

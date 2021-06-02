@@ -1,0 +1,10 @@
+/* miniprogram/pages/register/register.wxss */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input {
+  padding-top: 30rpx;
+}
