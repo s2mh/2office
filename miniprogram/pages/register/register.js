@@ -48,52 +48,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getUserInfo()
-  },
-
-  getUserInfo: function() {
-
-    let button = wx.createUserInfoButton({
-      type: 'text',
-      text: '获取用户信息',
-      style: {
-        left: 10,
-        top: 76,
-        width: 200,
-        height: 40,
-        lineHeight: 40,
-        backgroundColor: '#ff0000',
-        color: '#ffffff',
-        textAlign: 'center',
-        fontSize: 16,
-        borderRadius: 4
-      }
-    })
-    button.onTap((res) => {
-      console.log(res)
-    })
-
-    button.show()
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              this.setData({
-                avatarUrl: res.userInfo.avatarUrl,
-                nickName: res.userInfo.nickName
-              })
-            }
-          })
-        }
-      },
-      fail: () => {
-        this.setData({
-          dialogShow: true
-        })
-      }
+    const userInfo = getApp().globalData.userInfo
+    this.setData({
+      avatarUrl: userInfo.avatarUrl,
+      nickName: userInfo.nickName
     })
   },
 
