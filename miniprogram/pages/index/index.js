@@ -14,6 +14,11 @@ Page({
   },
 
   onLoad: function() {
+    wx.getSavedFileList({
+      success (res) {
+        console.log(res.fileList)
+      }
+    })
     if (!wx.cloud) {
       wx.redirectTo({
         url: '../chooseLib/chooseLib',
@@ -75,6 +80,35 @@ Page({
 
   // 上传图片
   doUpload: function () {
+
+    wx.chooseMessageFile({
+      count: 1,
+      type: 'file',
+      extension: ['xlsx', 'xls'],
+      success (res) {
+        // tempFilePath可以作为img标签的src属性显示图片
+        const tempFilePaths = res.tempFiles
+        console.log('tempFilePaths')
+        console.log(tempFilePaths)
+
+        wx.uploadFile({
+          url: 'https://example.weixin.qq.com/upload', //仅为示例，非真实的接口地址
+          filePath: tempFilePaths[0],
+          name: 'file',
+          formData: {
+            'user': 'test'
+          },
+          success (res){
+            const data = res.data
+            //do something
+          }
+        })
+      }
+    })
+
+    return
+
+
     // 选择图片
     wx.chooseImage({
       count: 1,
