@@ -91,18 +91,28 @@ Page({
         console.log('tempFilePaths')
         console.log(tempFilePaths)
 
-        wx.uploadFile({
-          url: 'https://example.weixin.qq.com/upload', //仅为示例，非真实的接口地址
-          filePath: tempFilePaths[0],
-          name: 'file',
-          formData: {
-            'user': 'test'
+        wx.cloud.uploadFile({
+          cloudPath: 'example.png', // 上传至云端的路径
+          filePath: tempFilePaths[0].path, // 小程序临时文件路径
+          success: res => {
+            // 返回文件 ID
+            console.log(res.fileID)
           },
-          success (res){
-            const data = res.data
-            //do something
-          }
+          fail: console.error
         })
+
+        // wx.uploadFile({
+        //   url: 'https://example.weixin.qq.com/upload', //仅为示例，非真实的接口地址
+        //   filePath: tempFilePaths[0],
+        //   name: 'file',
+        //   formData: {
+        //     'user': 'test'
+        //   },
+        //   success (res){
+        //     const data = res.data
+        //     //do something
+        //   }
+        // })
       }
     })
 
@@ -157,7 +167,7 @@ Page({
 
   onGetUserProfile: function () {
     if (app.globalData.userInfo) {
-      navigateToRegister()
+      this.navigateToRegister()
       return
     }
 
@@ -165,7 +175,7 @@ Page({
     var storedUserInfo = wx.getStorageSync(userInfoKey)
     if (storedUserInfo) {
       app.globalData.userInfo = storedUserInfo
-      navigateToRegister()
+      this.navigateToRegister()
       return
     }
 
@@ -181,7 +191,7 @@ Page({
                 key: userInfoKey,
                 data: res.userInfo
               })
-              app.globalData.userInfo = userInfo
+              app.globalData.userInfo = res.userInfo
               this.navigateToRegister()
             },
             fail: error => {
@@ -197,7 +207,7 @@ Page({
     })
   },
 
-  navigateToRegister() {
+  navigateToRegister: function() {
     wx.navigateTo({
       url: '../register/register',
     })
