@@ -1,0 +1,10 @@
+<!--miniprogram/pages/select/select.wxml-->
+<view class="container">
+  <!-- <view class="view" style="background-color: red"> -->
+  <view class="view">
+    <text class="text">好好学习</text>
+  </view>
+  <view class="view">
+    <text class="text">天天向上</text>
+  </view>
+</view>

@@ -74,6 +74,12 @@
   </view>
 
   <view class="uploader">
+    <navigator url="../select/select" open-type="navigate" class="uploader-text">
+      <text>select</text>
+    </navigator>
+  </view>
+  
+  <view class="uploader">
     <button class="userinfo-nickname" bindtap="onGetUserProfile">register</button>
   </view>
 
