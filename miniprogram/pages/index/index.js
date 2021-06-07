@@ -215,10 +215,9 @@ Page({
       _openid: app.globalData.openid
     }).get({
       success: res => {
-        this.setData({
-          queryResult: JSON.stringify(res.data, null, 2)
-        })
-        console.log('[数据库] [查询记录] 成功: ', res)
+        if(res.data[1]) {
+
+        }
       },
       fail: err => {
         wx.showToast({
