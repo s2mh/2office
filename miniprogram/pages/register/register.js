@@ -13,34 +13,43 @@ Page({
     dialogShow: false,
     rules: [{
       name: 'name',
-      rules: [{ required: true, message: '请输入姓名' }, { minlength: 2, message: '姓名格式不正确' }],
-    }, {
-      name: 'id',
-      rules: [{ required: true, message: '请输入教工号' }, { minlength: 9, message: '教工号不正确' }],
+      rules: [{ required: true, message: '请输入您的姓名' }, { minlength: 2, message: '姓名至少两个字' }],
+    // }, {
+    //   name: 'id',
+    //   rules: [{ required: true, message: '请输入教工号' }, { minlength: 9, message: '教工号不正确' }],
     }, {
       name: 'mobile',
-      rules: [{ required: true, message: '请输入手机号码' }, { mobile: true, message: '手机号码格式不正确' }],
+      rules: [{ required: true, message: '请输入您的手机号码' }, { mobile: true, message: '手机号码格式不正确' }],
+    }, {
+      name: 'organizationId',
+      rules: [{ required: true, message: '请输入6位组织编号' }, { rangelength: [6, 6], message: '组织编号为6位字母或数字' }],
     }],
     viewData: [{
       key: 'name',
       title: '姓名',
-      placeholder: '请输入姓名',
+      placeholder: '请输入您的姓名',
       showError: false
-    }, {
-      key: 'id',
-      title: '教工号',
-      placeholder: '请输入教工号',
-      showError: false
+    // }, {
+    //   key: 'id',
+    //   title: '教工号',
+    //   placeholder: '请输入教工号',
+    //   showError: false
     }, {
       key: 'mobile',
       title: '手机号',
-      placeholder: '请输入手机号',
+      placeholder: '请输入您的手机号',
+      showError: false
+    }, {
+      key: 'organizationId',
+      title: '组织编号',
+      placeholder: '请输入6位组织编号',
       showError: false
     }],
     formData: {
       name: '',
-      id: '',
-      mobile: ''
+      organizationId: '',
+      mobile: '',
+      state: 0 // 0 未加入； 1 已经加入
     }
   },
 
@@ -85,12 +94,33 @@ Page({
         //     title: '校验xxxx'
         // })
       } else {
-          wx.showToast({
-              title: '校验通过'
-          })
+        this.requestJoin()
+        wx.showToast({
+            title: '校验通过'
+        })
       }
   })
     console.log('fdsdfsdf')
+  },
+  requestJoin: function () {
+    const db = wx.cloud.database()
+    db.collection('member').add({
+      data: this.data.formData,
+      success: res => {
+       
+        wx.showToast({
+          title: '新增记录成功',
+        })
+        console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '申请加入请求失败'
+        })
+        console.error('[数据库] [新增记录] 失败：', err)
+      }
+    })
   },
 
   /**

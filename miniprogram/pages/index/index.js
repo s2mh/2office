@@ -168,7 +168,7 @@ Page({
 
   onGetUserProfile: function () {
     if (app.globalData.userInfo) {
-      this.navigateToRegister()
+      this.navigateToSelect()
       return
     }
 
@@ -176,7 +176,7 @@ Page({
     var storedUserInfo = wx.getStorageSync(userInfoKey)
     if (storedUserInfo) {
       app.globalData.userInfo = storedUserInfo
-      this.navigateToRegister()
+      this.navigateToSelect()
       return
     }
 
@@ -193,7 +193,7 @@ Page({
                 data: res.userInfo
               })
               app.globalData.userInfo = res.userInfo
-              this.navigateToRegister()
+              this.navigateToSelect()
             },
             fail: error => {
             }
@@ -208,7 +208,7 @@ Page({
     })
   },
 
-  searchOpenId: function(openid) {
+  searchOpenId: function() {
     const db = wx.cloud.database()
     // 查询当前用户所有的 counters
     db.collection('member').where({
@@ -229,9 +229,9 @@ Page({
     })
   },
 
-  navigateToRegister: function() {
+  navigateToSelect: function() {
     wx.navigateTo({
-      url: '../register/register',
+      url: '../select/select',
     })
   }
 

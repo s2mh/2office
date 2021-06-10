@@ -1,4 +1,4 @@
-// miniprogram/pages/select/select.js
+// miniprogram/pages/profile/profile.js
 Page({
 
   /**
@@ -62,10 +62,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-  onNavigateToRegister: function() {
-    wx.navigateTo({
-      url: '../register/register',
-    })
   }
 })

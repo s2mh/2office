@@ -1,0 +1,10 @@
+<!--miniprogram/pages/profile/profile.wxml-->
+<text>miniprogram/pages/profile/profile.wxml</text>
+<view class="container">
+<!-- 您还未关联到任何组织，请选择： -->
+<view class="page__title">我们要</view>
+    <!-- 加入 -->
+    <button type="primary" bindtap="commit">好好学习</button>
+    <!-- 创建 -->
+    <button type="primary" bindtap="commit">天天向上</button>
+</view>

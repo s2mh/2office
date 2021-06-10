@@ -5,7 +5,7 @@
     <image style="width: 200rpx; height: 200rpx; background-color: #eeeeee; border-radius: 50%;" mode="aspectFill" src="{{avatarUrl}}"></image>
   </view>
 
-  <mp-dialog title="请授权" show="{{dialogShow}}" bindbuttontap="tapDialogButton" buttons="{{[{text: '取消'}, {text: '确认'}]}}">
+  <mp-dialog title="请授权" show="{{dialogShow}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
     <view>我们需要验证您的信息</view>
   </mp-dialog>
 
@@ -13,7 +13,7 @@
 
   <mp-form id="form" rules="{{rules}}" models="{{formData}}">
     <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
-      <mp-cells title="资料" footer="只会保留最后一次提交的资料">
+      <mp-cells title="申请信息" footer="组织编号可向组织管理员索取">
         <mp-cell wx:for="{{viewData}}" prop="{{item.key}}" title="{{item.title}}">
           <input bindinput="formInputChange" 
           data-field="{{item.key}}" 
@@ -21,13 +21,12 @@
           placeholder="{{item.placeholder}}"
           show-error="{{item.showError}}"/>
         </mp-cell>
-      </mp-cells>
-      
+      </mp-cells>      
     </view>
   </mp-form>
 
   <view class="weui-btn-area">
-    <button class="weui-btn" type="primary" bindtap="commit">提交</button>
+    <button class="weui-btn" type="primary" bindtap="commit">申请加入</button>
   </view>
 
 </view>

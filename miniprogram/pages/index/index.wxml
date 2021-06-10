@@ -74,8 +74,8 @@
   </view>
 
   <view class="uploader">
-    <navigator url="../select/select" open-type="navigate" class="uploader-text">
-      <text>select</text>
+    <navigator url="../state/state" open-type="navigate" class="uploader-text">
+      <text>state</text>
     </navigator>
   </view>
   

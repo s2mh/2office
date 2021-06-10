@@ -1,10 +1,23 @@
 <!--miniprogram/pages/select/select.wxml-->
-<view class="container">
-  <!-- <view class="view" style="background-color: red"> -->
+<!-- <view class="container">
   <view class="view">
     <text class="text">好好学习</text>
   </view>
   <view class="view">
     <text class="text">天天向上</text>
   </view>
+ </view> -->
+
+
+ <view class="page">
+    <view class="page__hd">
+        <view class="page__title">您未关联任何组织</view>
+        <view class="page__desc">请选择：</view>
+    </view>
+    <view class="page__bd">
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="default" bindtap="onNavigateToRegister">加入组织</button>
+            <button class="weui-btn" type="default" bindtap="create">创建组织</button>
+        </view>
+    </view>
 </view>
