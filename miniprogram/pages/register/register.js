@@ -49,7 +49,7 @@ Page({
       name: '',
       organizationId: '',
       mobile: '',
-      state: 0 // 0 未加入； 1 已经加入
+      state: 'checking' // 0 未加入； 1 已经加入
     }
   },
 
@@ -95,12 +95,11 @@ Page({
         // })
       } else {
         this.requestJoin()
-        wx.showToast({
-            title: '校验通过'
-        })
+        // wx.showToast({
+        //     title: '校验通过'
+        // })
       }
-  })
-    console.log('fdsdfsdf')
+    })
   },
   requestJoin: function () {
     const db = wx.cloud.database()
@@ -109,7 +108,13 @@ Page({
       success: res => {
        
         wx.showToast({
-          title: '新增记录成功',
+          title: '已申请',
+          duration: 3,
+          complete: (res) => {
+            wx.reLaunch({
+              url: '../state/state',
+            })
+          }
         })
         console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
       },

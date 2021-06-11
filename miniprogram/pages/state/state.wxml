@@ -1,16 +1,19 @@
 <!--miniprogram/pages/state/state.wxml-->
 
 
-<view wx:if="{{state == 'uninitialized'}}" class="page">
+<view wx:if="{{state == 'Unknown'}}" class="page">
     <button type="primary" class="userinfo-nickname" bindtap="onGetUserProfile">登录</button>
 </view>
 
-<view wx:elif="{{state == 'checking'}}" class="checkingPage">
+<view wx:else class="checkingPage">
     <mp-msg type="waiting" title="申请审核中">
         <view slot="desc">请等待管理员审核您的加入申请</view>
+        <view slot="handle">
+            <button class="weui-btn" type="default" bindbuttontap="onRefresh">刷新</button>
+        </view>
         <view slot="footer">
             <view class="weui-footer__links">
-                <text class="weui-footer__link" bindtap="revocation">撤销申请</text>
+                <text class="weui-footer__link" bindtap="onRevocation">撤销申请</text>
             </view>
         </view>
     </mp-msg>

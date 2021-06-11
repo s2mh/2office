@@ -1,5 +1,13 @@
 // miniprogram/pages/state/state.js
 
+const State = {
+  Unknown   : 'Unknown',  // 未知，接口未返回
+  Stranger  : 'Stranger', // 未加入
+  Checking  : 'Checking', // 待审核
+  Joined    : 'Joined',   // 已加入
+  Rejected  : 'Rejected', // 被拒绝
+}
+
 const app = getApp()
 
 Page({
@@ -8,13 +16,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    // uninitialized 未拿到头像信息 
-    // loading 加载中  
-    // stranger 未加入  
-    // checking 审核中  
-    // joined 已加入
-    state: 'checking',
-
+    state: State.Unknown,
 
     dialogShow: false,
     revocationButtons: [{text: '否'}, {text: '是'}]
@@ -24,41 +26,40 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // wx.showLoading({
-    //   title: 'jiazaizhong',
-    // })
+    this.getOpenid()
+  },
+  
+  getOpenid: function() {
+    // 调用云函数
     wx.cloud.callFunction({
       name: 'login',
       data: {},
       success: res => {
         console.log('[云函数] [login] user openid: ', res.result.openid)
         app.globalData.openid = res.result.openid
-        // wx.navigateTo({
-        //   url: '../userConsole/userConsole',
-        // })
+        this.checkOpenId(res.result.openid)
       },
       fail: err => {
         console.error('[云函数] [login] 调用失败', err)
-        // wx.navigateTo({
-        //   url: '../deployFunctions/deployFunctions',
-        // })
+        wx.showToast({
+          title: err,
+        })
       }
     })
   },
-onGetUserProfile: function () {
+
+  onGetUserProfile: function () {
     if (app.globalData.userInfo) {
-      this.toSelect()
+      this.didGetUserProfile()
       return
     }
-
     const userInfoKey = 'userInfoKey'
     var storedUserInfo = wx.getStorageSync(userInfoKey)
     if (storedUserInfo) {
       app.globalData.userInfo = storedUserInfo
-      this.toSelect()
+      this.didGetUserProfile()
       return
     }
-
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -72,7 +73,7 @@ onGetUserProfile: function () {
                 data: res.userInfo
               })
               app.globalData.userInfo = res.userInfo
-              this.toSelect()
+              this.didGetUserProfile()
             },
             fail: error => {
             }
@@ -86,11 +87,23 @@ onGetUserProfile: function () {
       }
     })
   },
-  toSelect: function() {
+
+  didGetUserProfile: function() {
+    if (app.globalData.openid) {
+      this.redirectToSelect()
+    } else {
+      wx.showLoading({
+        title: '数据加载中',
+      })
+    }
+  },
+
+  redirectToSelect: function() {
     wx.redirectTo({
       url: '../select/select',
     })
   },
+
   checkOpenId: function(openid) {
     const db = wx.cloud.database()
     // 查询当前用户所有的 counters
@@ -98,9 +111,16 @@ onGetUserProfile: function () {
       _openid: openid
     }).get({
       success: res => {
-        if(res.data[1]) {
-
+        var state = State.Stranger
+        
+        const member = res.data[0]
+        if(member) {
+           state = member.state
         }
+
+        this.setData({
+          state: state
+        })
       },
       fail: err => {
         wx.showToast({
@@ -111,11 +131,17 @@ onGetUserProfile: function () {
       }
     })
   },
-  revocation: function() {
+
+  onRefresh: function() {
+    this.checkOpenId(app.globalData.openid)
+  },
+
+  onRevocation: function() {
     this.setData({
       dialogShow: true
     })
   },
+
   tapDialogButton: function(button) {
     console.log(button.detail)
     this.setData({

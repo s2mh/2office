@@ -16,8 +16,8 @@
     </view>
     <view class="page__bd">
         <view class="weui-btn-area">
-            <button class="weui-btn" type="default" bindtap="onNavigateToRegister">加入组织</button>
-            <button class="weui-btn" type="default" bindtap="create">创建组织</button>
+            <button class="weui-btn" type="primary" bindtap="onNavigateToRegister">加入组织</button>
+            <button class="weui-btn" type="primary" bindtap="create">创建组织</button>
         </view>
     </view>
 </view>
