@@ -9,6 +9,7 @@ const State = {
 }
 
 const app = getApp()
+const userInfoKey = 'UserInfoKey'
 
 Page({
 
@@ -16,10 +17,12 @@ Page({
    * 页面的初始数据
    */
   data: {
+    hasUserProfile: false,
+    hasOpenid: false,
     state: State.Unknown,
-
     dialogShow: false,
-    revocationButtons: [{text: '否'}, {text: '是'}]
+    revocationButtons: [{text: '否'}, {text: '是'}],
+    member: null
   },
 
   /**
@@ -27,9 +30,17 @@ Page({
    */
   onLoad: function (options) {
     this.getOpenid()
+    this.getUserProfile()
   },
   
   getOpenid: function() {
+    /// 用户信息已获取
+    if (this.data.hasUserProfile) {
+      wx.showLoading({
+        title: '数据加载中',
+      })
+    }
+    
     // 调用云函数
     wx.cloud.callFunction({
       name: 'login',
@@ -37,6 +48,7 @@ Page({
       success: res => {
         console.log('[云函数] [login] user openid: ', res.result.openid)
         app.globalData.openid = res.result.openid
+        this.data.hasOpenid = true
         this.checkOpenId(res.result.openid)
       },
       fail: err => {
@@ -48,18 +60,19 @@ Page({
     })
   },
 
-  onGetUserProfile: function () {
+  getUserProfile: function() {
     if (app.globalData.userInfo) {
       this.didGetUserProfile()
       return
     }
-    const userInfoKey = 'userInfoKey'
     var storedUserInfo = wx.getStorageSync(userInfoKey)
     if (storedUserInfo) {
       app.globalData.userInfo = storedUserInfo
       this.didGetUserProfile()
-      return
     }
+  },
+
+  onGetUserProfile: function () {
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -89,13 +102,18 @@ Page({
   },
 
   didGetUserProfile: function() {
-    if (app.globalData.openid) {
-      this.redirectToSelect()
-    } else {
-      wx.showLoading({
-        title: '数据加载中',
-      })
-    }
+    this.setData({
+      hasUserProfile: true
+    }, function() {
+      if (this.data.hasOpenid) {
+        this.handleMemberData(this.data.member)
+      } else {
+        // openid 还没请求到，显示加载中
+        wx.showLoading({
+          title: '数据加载中....',
+        })
+      }
+    })
   },
 
   redirectToSelect: function() {
@@ -111,16 +129,8 @@ Page({
       _openid: openid
     }).get({
       success: res => {
-        var state = State.Stranger
-        
-        const member = res.data[0]
-        if(member) {
-           state = member.state
-        }
-
-        this.setData({
-          state: state
-        })
+        this.data.member = res.data[0]
+        this.handleMemberData(this.data.member)
       },
       fail: err => {
         wx.showToast({
@@ -130,6 +140,29 @@ Page({
         console.error('[数据库] [查询记录] 失败：', err)
       }
     })
+  },
+
+  handleMemberData: function(member) {
+    if (this.data.hasUserProfile && this.data.hasOpenid) {
+      var state = (member && member.state) ? member.state : State.Stranger
+      switch(state) {
+        case State.Checking:
+          this.setData({
+            state: state,
+            hasOpenid: true
+          }, function() {
+            wx.hideLoading()
+          })
+          break
+
+          case State.Joined:
+            break
+            // TODO
+
+          default:
+            this.redirectToSelect()
+      }  
+    }
   },
 
   onRefresh: function() {

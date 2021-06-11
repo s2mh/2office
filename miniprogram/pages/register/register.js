@@ -49,7 +49,7 @@ Page({
       name: '',
       organizationId: '',
       mobile: '',
-      state: 'checking' // 0 未加入； 1 已经加入
+      state: 'Checking'
     }
   },
 
@@ -90,14 +90,8 @@ Page({
                   error: errors[firstError[0]].message
               })
           }
-        //   wx.showToast({
-        //     title: '校验xxxx'
-        // })
       } else {
         this.requestJoin()
-        // wx.showToast({
-        //     title: '校验通过'
-        // })
       }
     })
   },

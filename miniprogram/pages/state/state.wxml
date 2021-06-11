@@ -1,11 +1,13 @@
 <!--miniprogram/pages/state/state.wxml-->
 
 
-<view wx:if="{{state == 'Unknown'}}" class="page">
+<view wx:if="{{!hasUserProfile}}" class="page">
     <button type="primary" class="userinfo-nickname" bindtap="onGetUserProfile">登录</button>
 </view>
-
-<view wx:else class="checkingPage">
+<view wx:elif="{{!hasOpenid}}" class="page">
+    
+</view>
+<view wx:elif="{{state == 'Checking'}}" class="checkingPage">
     <mp-msg type="waiting" title="申请审核中">
         <view slot="desc">请等待管理员审核您的加入申请</view>
         <view slot="handle">
