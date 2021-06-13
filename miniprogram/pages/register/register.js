@@ -1,4 +1,7 @@
 // miniprogram/pages/register/register.js
+
+import State from '../state'
+
 Page({
 
   /**
@@ -49,7 +52,7 @@ Page({
       name: '',
       organizationId: '',
       mobile: '',
-      state: 'Checking'
+      state: State.Checking
     }
   },
 

@@ -1,12 +1,14 @@
 // miniprogram/pages/state/state.js
 
-const State = {
-  Unknown   : 'Unknown',  // 未知，接口未返回
-  Stranger  : 'Stranger', // 未加入
-  Checking  : 'Checking', // 待审核
-  Joined    : 'Joined',   // 已加入
-  Rejected  : 'Rejected', // 被拒绝
-}
+// const State = {
+//   Unknown   : 'Unknown',  // 未知，接口未返回
+//   Stranger  : 'Stranger', // 未加入
+//   Checking  : 'Checking', // 待审核
+//   Joined    : 'Joined',   // 已加入
+//   Rejected  : 'Rejected', // 被拒绝
+// }
+
+import State from '../state'
 
 const app = getApp()
 const userInfoKey = 'UserInfoKey'
