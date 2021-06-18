@@ -5,10 +5,6 @@
     <image style="width: 200rpx; height: 200rpx; background-color: #eeeeee; border-radius: 50%;" mode="aspectFill" src="{{avatarUrl}}"></image>
   </view>
 
-  <mp-dialog title="请授权" show="{{dialogShow}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
-    <view>我们需要验证您的信息</view>
-  </mp-dialog>
-
   <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
 
   <mp-form id="form" rules="{{rules}}" models="{{formData}}">

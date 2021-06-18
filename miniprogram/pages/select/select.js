@@ -67,5 +67,10 @@ Page({
     wx.navigateTo({
       url: '../register/register',
     })
+  },
+  onNavigateToCreate: function() {
+    wx.navigateTo({
+      url: '../create/create',
+    })
   }
 })

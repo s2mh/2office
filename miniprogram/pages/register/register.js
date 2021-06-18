@@ -16,36 +16,28 @@ Page({
     dialogShow: false,
     rules: [{
       name: 'name',
-      rules: [{ required: true, message: '请输入您的姓名' }, { minlength: 2, message: '姓名至少两个字' }],
-    // }, {
-    //   name: 'id',
-    //   rules: [{ required: true, message: '请输入教工号' }, { minlength: 9, message: '教工号不正确' }],
+      rules: [{ required: true, message: '请输入您的姓名' }, { minlength: 2, message: '姓名至少2个字' }],
     }, {
       name: 'mobile',
-      rules: [{ required: true, message: '请输入您的手机号码' }, { mobile: true, message: '手机号码格式不正确' }],
+      rules: [{ required: true, message: '请输入您的手机号' }, { mobile: true, message: '手机号码格式不正确' }],
     }, {
       name: 'organizationId',
-      rules: [{ required: true, message: '请输入6位组织编号' }, { rangelength: [6, 6], message: '组织编号为6位字母或数字' }],
+      rules: [{ required: true, message: '请输入您的组织编号' }, { rangelength: [6, 6], message: '组织编号为6位字母或数字' }],
     }],
     viewData: [{
       key: 'name',
       title: '姓名',
-      placeholder: '请输入您的姓名',
+      placeholder: '不少于2个字',
       showError: false
-    // }, {
-    //   key: 'id',
-    //   title: '教工号',
-    //   placeholder: '请输入教工号',
-    //   showError: false
     }, {
       key: 'mobile',
       title: '手机号',
-      placeholder: '请输入您的手机号',
+      placeholder: '11位手机号码',
       showError: false
     }, {
       key: 'organizationId',
       title: '组织编号',
-      placeholder: '请输入6位组织编号',
+      placeholder: '6位字母或数字',
       showError: false
     }],
     formData: {
@@ -67,13 +59,6 @@ Page({
     })
   },
 
-  tapDialogButton: function (button) {
-    this.setData({
-      dialogShow: false
-    })
-    console.log(button)
-  },
-
   formInputChange(e) {
     const {field} = e.currentTarget.dataset
     this.setData({
@@ -82,19 +67,18 @@ Page({
   },
 
   commit: function () {
-
     let f = this.selectComponent('#form')
     f.validate((valid, errors) => {
       console.log('valid', valid, errors)
-      if (!valid) {
-          const firstError = Object.keys(errors)
-          if (firstError.length) {
-              this.setData({
-                  error: errors[firstError[0]].message
-              })
-          }
-      } else {
+      if (valid) {
         this.requestJoin()
+      } else {
+        const firstError = Object.keys(errors)
+        if (firstError.length) {
+          this.setData({
+              error: errors[firstError[0]].message
+          })
+        }
       }
     })
   },

@@ -1,2 +1,23 @@
-<!--miniprogram/pages/create/create.wxml-->
-<text>miniprogram/pages/create/create.wxml</text>
+<view class="page">
+
+  <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+
+  <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+    <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+      <mp-cells title="申请信息" footer="组织编号可向组织管理员索取">
+        <mp-cell wx:for="{{viewData}}" prop="{{item.key}}" title="{{item.title}}">
+          <input bindinput="formInputChange" 
+          data-field="{{item.key}}" 
+          class="weui-input" 
+          placeholder="{{item.placeholder}}"
+          show-error="{{item.showError}}"/>
+        </mp-cell>
+      </mp-cells>      
+    </view>
+  </mp-form>
+
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" bindtap="commit">创建</button>
+  </view>
+
+</view>

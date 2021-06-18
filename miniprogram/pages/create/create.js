@@ -5,62 +5,76 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    verifyingState: 'verifying',
+    buttons: [{text: '取消'}, {text: '确定'}],
+    dialogShow: false,
+    rules: [{
+      name: 'name',
+      rules: [{ required: true, message: '请输入您的组织名称123' }, { minlength: 2, message: '组织名称至少2个字' }],
+    }, {
+      name: 'organizationId',
+      rules: [
+        { required: true, message: '请输入您的组织编号' }, 
+        { validator: validator }
+      ]  
+    }],
+    viewData: [{
+      key: 'name',
+      title: '组织名称',
+      placeholder: '不少于2个字',
+      showError: false
+    }, {
+      key: 'organizationId',
+      title: '组织编号',
+      placeholder: '6位数字或字母',
+      showError: false
+    }],
+    formData: {
+      name: '',
+      organizationId: '',
+      mobile: '',
+      varified: false
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+  formInputChange(e) {
+    const {field} = e.currentTarget.dataset
+    this.setData({
+        [`formData.${field}`]: e.detail.value
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  commit: function () {
+    let f = this.selectComponent('#form')
+    f.validate((valid, errors) => {
+      console.log('valid', valid, errors)
+      if (valid) {
+        // this.requestJoin()
+      } else {
+        const firstError = Object.keys(errors)
+        if (firstError.length) {
+          this.setData({
+              error: errors[firstError[0]].message
+          })
+        }
+      }
+    })
   }
 })
+
+async function validator(rule, value, param, models) {
+  var reg = /^[a-zA-Z0-9.-]*$/i
+  if (!reg.test(value)) {
+    return '组织编码为6位数字或字母'
+  }
+
+  const db = wx.cloud.database()
+  try {
+    const res = await db.collection('organization').where({
+      organizationId: value
+    }).get()
+    if (res.data.length > 0) {
+      return '该组织编码已存在'
+    }
+     
+  } catch (error) {
+  }
+}
