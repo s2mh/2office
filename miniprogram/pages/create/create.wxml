@@ -4,7 +4,7 @@
 
   <mp-form id="form" rules="{{rules}}" models="{{formData}}">
     <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
-      <mp-cells title="申请信息" footer="组织编号可向组织管理员索取">
+      <mp-cells>
         <mp-cell wx:for="{{viewData}}" prop="{{item.key}}" title="{{item.title}}">
           <input bindinput="formInputChange" 
           data-field="{{item.key}}" 

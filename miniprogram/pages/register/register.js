@@ -13,7 +13,6 @@ Page({
     // verified: 已验证
     verifyingState: 'verifying',
     buttons: [{text: '取消'}, {text: '确定'}],
-    dialogShow: false,
     rules: [{
       name: 'name',
       rules: [{ required: true, message: '请输入您的姓名' }, { minlength: 2, message: '姓名至少2个字' }],
@@ -27,7 +26,7 @@ Page({
     viewData: [{
       key: 'name',
       title: '姓名',
-      placeholder: '不少于2个字',
+      placeholder: '至少2个字',
       showError: false
     }, {
       key: 'mobile',

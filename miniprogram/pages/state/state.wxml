@@ -7,9 +7,10 @@
 <view wx:elif="{{!hasOpenid}}" class="page">
     
 </view>
-<view wx:elif="{{state == 'Checking'}}" class="checkingPage">
+<view wx:elif="{{state == 'Checking' || state == 'Creating'}}" class="checkingPage">
     <mp-msg type="waiting" title="申请审核中">
-        <view slot="desc">请等待管理员审核您的加入申请</view>
+        <view wx:if="{{state == 'Checking'}}" slot="desc">请等待管理员审核您的加入申请</view>
+        <view wx:else slot="desc">创建申请已提交，请联系 15880083031</view>
         <view slot="handle">
             <button class="weui-btn" type="default" bindbuttontap="onRefresh">刷新</button>
         </view>

@@ -145,10 +145,12 @@ Page({
   },
 
   handleMemberData: function(member) {
+    // 用户信息和 openid 都获取到之后
     if (this.data.hasUserProfile && this.data.hasOpenid) {
       var state = (member && member.state) ? member.state : State.Stranger
       switch(state) {
         case State.Checking:
+        case State.Creating:
           this.setData({
             state: state,
             hasOpenid: true
@@ -183,16 +185,27 @@ Page({
       dialogShow: false
     })
     if (button.detail.index == 1) {
-      const db = wx.cloud.database()
-      db.collection('member').where({
-        _openid: app.globalData.openid
-      }).remove({
-        success: res => {
-          wx.redirectTo({
-            url: '../select/select',
-          })
-        }
+      var task = this.revocateChecking()
+      if (this.data.member.state == State.Creating) {
+        task = Promise.all([task, this.revocateCreating()]) 
+      }
+      task.then( res => {
+        wx.redirectTo({
+          url: '../select/select',
+        })
       })
     }
+  },
+  revocateChecking: function() {
+    const db = wx.cloud.database()
+    return db.collection('member').where({
+      _openid: app.globalData.openid
+    }).remove()
+  },
+  revocateCreating: function() {
+    const db = wx.cloud.database()
+    return db.collection('organization').where({
+      organizationId: this.data.member.organizationId
+    }).remove()
   }
 })
