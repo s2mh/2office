@@ -160,8 +160,14 @@ Page({
           break
 
           case State.Joined:
-            break
-            // TODO
+            wx.hideLoading()
+            this.enterHome(true)
+          break
+          
+          case State.Created:
+            wx.hideLoading()
+            this.enterHome(true)
+          break
 
           default:
             this.redirectToSelect()
@@ -169,7 +175,7 @@ Page({
     }
   },
 
-  onRefresh: function() {
+  onRefresh: function(button) {
     this.checkOpenId(app.globalData.openid)
   },
 
@@ -205,7 +211,12 @@ Page({
   revocateCreating: function() {
     const db = wx.cloud.database()
     return db.collection('organization').where({
-      organizationId: this.data.member.organizationId
+      _openid: app.globalData.openid
     }).remove()
+  },
+  enterHome: function(isAdmin) {
+    wx.redirectTo({
+      url: '../home/home' + (isAdmin ? '?isAdmin=true' : ''),
+    })
   }
 })

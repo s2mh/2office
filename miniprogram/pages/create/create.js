@@ -73,7 +73,17 @@ Page({
               error: '该组织编码已存在'
             })
           } else {
-            this
+            Promise.all([this.createOrganization(), this.createMember()]).then(res => {
+              wx.showToast({
+                title: '创建申请已提交',
+                duration: 3,
+                complete: (res) => {
+                  wx.reLaunch({
+                    url: '../state/state',
+                  })
+                }
+              })
+            })
           }
         }) 
       } else {
@@ -97,29 +107,16 @@ Page({
     } catch (error) {
     }
   },
-  create: function() {
+  createOrganization: function() {
     const db = wx.cloud.database()
-    db.collection('organization').add({
-      data: this.data.formData,
-      success: res => {
-        wx.showToast({
-          title: '已申请',
-          duration: 3,
-          complete: (res) => {
-            wx.reLaunch({
-              url: '../state/state',
-            })
-          }
-        })
-        console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
-      },
-      fail: err => {
-        wx.showToast({
-          icon: 'none',
-          title: '创建请求失败'
-        })
-        console.error('[数据库] [新增记录] 失败：', err)
-      }
+    return db.collection('organization').add({
+      data: this.data.formData
+    })
+  },
+  createMember: function() {
+    const db = wx.cloud.database()
+    return db.collection('member').add({
+      data: this.data.formData
     })
   }
 })

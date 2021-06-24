@@ -5,6 +5,7 @@ const State = {
   Joined    : 'Joined',   // 已加入
   Rejected  : 'Rejected', // 被拒绝
   Creating  : 'Creating', // 创建审核中
+  Created   : 'Created',  // 创建完成
 }
 
 export { State as default}

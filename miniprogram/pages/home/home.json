@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "mp-tabbar": "/miniprogram_npm/weui-miniprogram/tabbar/tabbar",
+    "templet": "./templet/templet",
+    "memberInfo": "./memberInfo/memberInfo",
+    "admin": "./admin/admin"
+  }
+}
