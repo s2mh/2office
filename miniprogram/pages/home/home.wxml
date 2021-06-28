@@ -1,8 +1,8 @@
 <!--miniprogram/pages/home/home.wxml-->
 
-<view class="normalPage">
+<view>
     <view hidden="{{selectedTabType != 'Templet'}}"><templet/></view>
     <view hidden="{{selectedTabType != 'MemberInfo'}}"><memberInfo/></view>
-    <view hidden="{{selectedTabType != 'Admin'}}" style="background-color: blue;"><admin/></view>
+    <view hidden="{{selectedTabType != 'Admin'}}"><admin/></view>
     <mp-tabbar style="position:fixed;bottom:0;width:100%;left:0;right:0;" list="{{list}}" bindchange="tabChange"></mp-tabbar>
 </view>

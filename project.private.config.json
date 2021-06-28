@@ -35,6 +35,12 @@
           "pathName": "pages/register/register",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/register/register",
+          "pathName": "pages/register/register",
+          "query": "",
+          "scene": null
         }
       ]
     }

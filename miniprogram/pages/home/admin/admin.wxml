@@ -1,7 +1,7 @@
 <!--pages/home/admin/admin.wxml-->
 
 <mp-form id="form" rules="{{rules}}" models="{{formData}}">
-  <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+  <view class="form" xmlns:wx="http://www.w3.org/1999/xhtml">
     <mp-cells>
       <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap">
         <mp-cell wx:for="{{viewData}}" prop="{{item.key}}" title="{{index}}">

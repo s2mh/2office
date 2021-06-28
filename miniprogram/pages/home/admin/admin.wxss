@@ -1,5 +1,14 @@
 /* pages/home/admin/admin.wxss */
 
+.cell {
+  color: blueviolet !important;
+  background-color: red;
+  background: burlywood;
+}
+
+.form {
+  padding-bottom: 160rpx;
+}
 
 .page {
   width:100%;
@@ -8,5 +17,5 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
 }
