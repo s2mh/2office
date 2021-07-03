@@ -6,6 +6,8 @@ const TabType = {
   Admin: 'Admin',
 }
 
+const app = getApp()
+
 Page({
   data: {
     selectedTabType: TabType.Templet
@@ -44,7 +46,8 @@ Page({
       list.push(this.adminTabData) 
     }
     var data = {
-      list: list
+      list: list,
+      items: app.globalData.organization.items
     }
     if (options.tab) {
       data.selectedTabType = options.tab

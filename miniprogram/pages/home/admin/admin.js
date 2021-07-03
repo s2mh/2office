@@ -6,6 +6,8 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    items: Array,
+    openid: String
   },
 
   /**
@@ -14,13 +16,14 @@ Component({
   data: {
     focusInput: true,
     rules: [],
-    formData: [],
-    viewData: [],
     slideButtons: [{
       type: 'warn',
       text: '删除'
     }],
-    addButtons: [{ text: '取消' }, { text: '确定' }]
+    addButtons: [
+      { text: '取消' },
+      { text: '确定' }
+    ]
   },
 
   /**
@@ -32,18 +35,9 @@ Component({
         dialogShow: true,
         focusInput: true
       })
+    },
 
-      console.log('gegegegegegegegegegege')
-      this.setData({
-      })
-    },
-    addItem: function (item) {
-      this.data.formData.push(item)
-      this.setData({
-        formData: this.data.formData,
-      })
-    },
-    formInputChange: function(input) {
+    formInputChange: function (input) {
       this.data.inputValue = input.detail.value
       console.log(input.detail)
     },
@@ -53,13 +47,38 @@ Component({
         dialogShow: false
       })
       if (button.detail.index == 1 && this.data.inputValue.length > 0) {
-        this.data.formData.push(this.data.inputValue)
+        this.data.items.push(this.data.inputValue)
         this.data.inputValue = ''
+        wx.showLoading({
+          title: '更新中',
+        })
+        const db = wx.cloud.database()
+        db.collection('member').where({
+          _openid: this.data.openid
+        }).update({
+          data: {
+            items: this.data.items
+          },
+          success: res => {
+            wx.hideLoading()
+            this.setData({
+              items: this.data.items,
+              inputValue: this.data.inputValue
+            })
+          },
+          fail: err => {
+            wx.showToast({
+              title: '更新失败'
+            })
+          }
+        })
+
+      } else {
+        this.setData({
+          items: this.data.items,
+          inputValue: this.data.inputValue
+        })
       }
-      this.setData({
-        formData: this.data.formData,
-        inputValue: this.data.inputValue
-      })
     }
   }
 })

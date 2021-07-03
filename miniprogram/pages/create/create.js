@@ -52,7 +52,8 @@ Page({
       organizationName: '',
       organizationId: '',
       mobile: '',
-      state: State.Creating
+      state: State.Creating,
+      items: ['姓', '名', '性别']
     }
   },
   formInputChange(e) {

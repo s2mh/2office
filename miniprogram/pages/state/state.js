@@ -1,13 +1,5 @@
 // miniprogram/pages/state/state.js
 
-// const State = {
-//   Unknown   : 'Unknown',  // 未知，接口未返回
-//   Stranger  : 'Stranger', // 未加入
-//   Checking  : 'Checking', // 待审核
-//   Joined    : 'Joined',   // 已加入
-//   Rejected  : 'Rejected', // 被拒绝
-// }
-
 import State from '../state'
 
 const app = getApp()
@@ -20,7 +12,7 @@ Page({
    */
   data: {
     hasUserProfile: false,
-    hasOpenid: false,
+    hadDBData: false,
     state: State.Unknown,
     dialogShow: false,
     revocationButtons: [{text: '否'}, {text: '是'}],
@@ -50,7 +42,6 @@ Page({
       success: res => {
         console.log('[云函数] [login] user openid: ', res.result.openid)
         app.globalData.openid = res.result.openid
-        this.data.hasOpenid = true
         this.checkOpenId(res.result.openid)
       },
       fail: err => {
@@ -107,7 +98,7 @@ Page({
     this.setData({
       hasUserProfile: true
     }, function() {
-      if (this.data.hasOpenid) {
+      if (this.data.hadDBData) {
         this.handleMemberData(this.data.member)
       } else {
         // openid 还没请求到，显示加载中
@@ -126,34 +117,46 @@ Page({
 
   checkOpenId: function(openid) {
     const db = wx.cloud.database()
-    // 查询当前用户所有的 counters
     db.collection('member').where({
       _openid: openid
     }).get({
       success: res => {
         this.data.member = res.data[0]
-        this.handleMemberData(this.data.member)
+        app.globalData.member = this.data.member
+        this.findOrganization(this.data.member.organizationId)
       },
       fail: err => {
         wx.showToast({
-          icon: 'none',
-          title: '查询记录失败'
+          title: 'member查询记录失败'
         })
         console.error('[数据库] [查询记录] 失败：', err)
       }
     })
   },
 
+  findOrganization: function(organizationId) {
+    const db = wx.cloud.database()
+    db.collection('organization').where({
+      organizationId: organizationId
+    }).get({
+      success: (res) => {
+        this.data.hadDBData = true
+        app.globalData.organization = res.data[0]
+        console.log(app.globalData.organization)
+        this.handleMemberData(this.data.member)
+      }
+    })
+  },
+
   handleMemberData: function(member) {
     // 用户信息和 openid 都获取到之后
-    if (this.data.hasUserProfile && this.data.hasOpenid) {
+    if (this.data.hasUserProfile && this.data.hadDBData) {
       var state = (member && member.state) ? member.state : State.Stranger
       switch(state) {
         case State.Checking:
         case State.Creating:
           this.setData({
-            state: state,
-            hasOpenid: true
+            state: state
           }, function() {
             wx.hideLoading()
           })
@@ -161,7 +164,7 @@ Page({
 
           case State.Joined:
             wx.hideLoading()
-            this.enterHome(true)
+            this.enterHome(false)
           break
           
           case State.Created:

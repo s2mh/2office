@@ -1,13 +1,12 @@
 <!--pages/home/admin/admin.wxml-->
-<mp-form id="form" rules="{{rules}}" models="{{formData}}">
+<mp-form id="form">
   <view class="form" xmlns:wx="http://www.w3.org/1999/xhtml">
     <mp-cells>
-      <mp-slideview wx:for="{{formData}}" buttons="{{slideButtons}}" bindbuttontap="slideButtonTap">
+      <mp-slideview wx:for="{{items}}" buttons="{{slideButtons}}" bindbuttontap="slideButtonTap">
         <mp-cell prop="{{item.key}}" title="{{item}}">
         </mp-cell>
       </mp-slideview>
 
-      
       <mp-cell>
         <view class="add">
           <button class="mini-btn" type="default" size="mini" bindtap="onAdd">添加</button>
@@ -18,5 +17,6 @@
 </mp-form>
 
 <mp-dialog title="test" show="{{dialogShow}}" bindbuttontap="tapAddDialogButton" buttons="{{addButtons}}">
-  <input value="{{inputValue}}" class="weui-cell weui-cell_input" bindinput="formInputChange" placeholder="输入选项" auto-focus/>
+  <input value="{{inputValue}}" class="weui-cell weui-cell_input" bindinput="formInputChange" placeholder="输入选项"
+    auto-focus />
 </mp-dialog>
