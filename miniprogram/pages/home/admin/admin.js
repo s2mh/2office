@@ -12,32 +12,53 @@ Component({
    * 组件的初始数据
    */
   data: {
+    focusInput: true,
     rules: [],
     formData: [],
     viewData: [],
     slideButtons: [{
+      type: 'warn',
       text: '删除'
-    }]
+    }],
+    addButtons: [{ text: '取消' }, { text: '确定' }]
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-    onAdd: function() {
-      console.log(this.data)
-      this.data.rules.push({
-        name: 'name',
-        rules: { required: true },
-      })
-      this.data.formData.push(null)
-      this.data.viewData.push({
-        showError: false
-      })
+    onAdd: function () {
       this.setData({
-        rules: this.data.rules,
+        dialogShow: true,
+        focusInput: true
+      })
+
+      console.log('gegegegegegegegegegege')
+      this.setData({
+      })
+    },
+    addItem: function (item) {
+      this.data.formData.push(item)
+      this.setData({
         formData: this.data.formData,
-        viewData: this.data.viewData,
+      })
+    },
+    formInputChange: function(input) {
+      this.data.inputValue = input.detail.value
+      console.log(input.detail)
+    },
+
+    tapAddDialogButton: function (button) {
+      this.setData({
+        dialogShow: false
+      })
+      if (button.detail.index == 1 && this.data.inputValue.length > 0) {
+        this.data.formData.push(this.data.inputValue)
+        this.data.inputValue = ''
+      }
+      this.setData({
+        formData: this.data.formData,
+        inputValue: this.data.inputValue
       })
     }
   }

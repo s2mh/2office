@@ -38,7 +38,7 @@
   },
   "appid": "wx8c235aea247970da",
   "projectname": "2Office",
-  "libVersion": "2.14.1",
+  "libVersion": "2.17.0",
   "condition": {
     "search": {
       "list": []
