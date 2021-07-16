@@ -16,10 +16,10 @@ Component({
   data: {
     focusInput: true,
     rules: [],
-    slideButtons: [{
+    slideButtons: {
       type: 'warn',
       text: '删除'
-    }],
+    },
     addButtons: [
       { text: '取消' },
       { text: '确定' }
@@ -79,6 +79,10 @@ Component({
           inputValue: this.data.inputValue
         })
       }
+    },
+    slideButtonTap: function(index, data) {
+      console.log('slide button tap', index.detail)
+      console.log('slide button tap', data)
     }
   }
 })
