@@ -16,7 +16,7 @@ Component({
   data: {
     focusInput: true,
     rules: [],
-    slideButtons: {
+    slideButton: {
       type: 'warn',
       text: '删除'
     },
@@ -26,10 +26,17 @@ Component({
     ]
   },
 
+  attached: function () { 
+    
+  }, 
+
   /**
    * 组件的方法列表
    */
   methods: {
+
+
+
     onAdd: function () {
       this.setData({
         dialogShow: true,
@@ -42,11 +49,11 @@ Component({
       console.log(input.detail)
     },
 
-    tapAddDialogButton: function (button) {
+    tapAddDialogButton: function(button) {
       this.setData({
         dialogShow: false
       })
-      if (button.detail.index == 1 && this.data.inputValue.length > 0) {
+      if (button.detail.index == 1 && this.data.inputValue) {
         this.data.items.push(this.data.inputValue)
         this.data.inputValue = ''
         wx.showLoading({
@@ -72,7 +79,6 @@ Component({
             })
           }
         })
-
       } else {
         this.setData({
           items: this.data.items,
@@ -81,7 +87,13 @@ Component({
       }
     },
     slideButtonTap: function(index, data) {
-      console.log('slide button tap', index.detail)
+      console.log('eeeeee', this.data.items)
+      this.data.items.splice(index.detail.data, 1)
+      this.setData({
+        items: this.data.items
+      })
+      console.log('ffffff', this.data.items)
+      console.log('slide button tap', index.detail.data)
       console.log('slide button tap', data)
     }
   }

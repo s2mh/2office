@@ -2,10 +2,9 @@
 <mp-form id="form">
   <view class="form" xmlns:wx="http://www.w3.org/1999/xhtml">
     <mp-cells>
-      <mp-slideview buttons="{[{slideButtons,data:index}]}" bindbuttontap="slideButtonTap">
+      <mp-slideview wx:for="{{items}}" buttons="{{[{...slideButton, data:index}]}}" bindbuttontap="slideButtonTap">
         <mp-cell prop="{{item.key}}" title="{{item}}"/>
       </mp-slideview>
-      
 
       <mp-cell>
         <view class="add">
